@@ -970,6 +970,15 @@ export default class Gantt {
         const $bar = bar.$bar;
         $bar.finaldx = this.get_snap_position(dx);
         this.hide_popup();
+
+        // Check bounds
+        const new_x = $bar.ox + $bar.finaldx;
+        if (new_x < 0) {
+          $bar.finaldx = -$bar.ox;
+        } else if (new_x + $bar.getWidth() > this.$svg.clientWidth) {
+          $bar.finaldx = this.$svg.clientWidth - $bar.ox - $bar.getWidth();
+        }
+
         if (is_resizing_left) {
           if (parent_bar_id === bar.task.id) {
             bar.update_bar_position({
